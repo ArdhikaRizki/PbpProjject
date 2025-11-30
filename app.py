@@ -691,59 +691,102 @@ class UIBuilder:
         DataManager.initialize_session()
         
         with st.expander("📊 Data Input & Management", expanded=False):
-            col1, col2 = st.columns(2)
+            # Tabs for different input methods
+            tab1, tab2, tab3 = st.tabs(["✏️ Manual Entry", "📂 Batch Import", "💾 Session Management"])
             
-            # Manual entry
-            with col1:
-                st.markdown("#### ✏️ Manual Entry")
+            # Tab 1: Manual entry
+            with tab1:
                 with st.form("point_input", clear_on_submit=True):
-                    c1, c2, c3 = st.columns(3)
-                    x = c1.number_input("X", value=0.0, step=50.0)
-                    y = c2.number_input("Y", value=0.0, step=50.0)
-                    z = c3.number_input("Z", value=1000.0, step=10.0)
+                    st.markdown("**Enter coordinates:**")
+                    col1, col2, col3 = st.columns(3)
                     
-                    if st.form_submit_button("➕ Add", use_container_width=True):
+                    with col1:
+                        x = st.number_input("Easting (X)", value=0.0, step=50.0, help="X coordinate in meters")
+                    with col2:
+                        y = st.number_input("Northing (Y)", value=0.0, step=50.0, help="Y coordinate in meters")
+                    with col3:
+                        z = st.number_input("Depth (Z)", value=1000.0, step=10.0, help="Depth in meters")
+                    
+                    submitted = st.form_submit_button("➕ Add Point", use_container_width=True, type="primary")
+                    if submitted:
                         DataManager.add_point(x, y, z)
-                        st.success("✅ Point added!")
+                        st.success(f"✅ Point added: X={x}, Y={y}, Z={z}")
                         st.rerun()
             
-            # File upload
-            with col2:
-                st.markdown("#### 📂 Batch Import")
-                file = st.file_uploader("CSV or Excel", type=["csv", "xlsx"])
+            # Tab 2: File upload
+            with tab2:
+                st.markdown("**Upload your data file:**")
+                st.caption("Supported formats: CSV, Excel (.xlsx)")
+                
+                file = st.file_uploader(
+                    "Choose file",
+                    type=["csv", "xlsx"],
+                    help="File must contain columns: X, Y, Z"
+                )
                 
                 if file:
-                    if st.button("🚀 Import", use_container_width=True):
-                        if DataManager.load_from_file(file):
-                            st.success("✅ Data loaded!")
-                            st.rerun()
-                        else:
-                            st.error("❌ Invalid file format!")
+                    try:
+                        # Preview data
+                        preview_df = pd.read_csv(file) if file.name.endswith('.csv') else pd.read_excel(file)
+                        preview_df.columns = [c.upper() for c in preview_df.columns]
+                        
+                        st.markdown("**Preview:**")
+                        st.dataframe(preview_df.head(), use_container_width=True)
+                        
+                        col1, col2 = st.columns([3, 1])
+                        with col1:
+                            st.info(f"📊 Found {len(preview_df)} data points")
+                        with col2:
+                            if st.button("🚀 Import Data", use_container_width=True, type="primary"):
+                                file.seek(0)  # Reset file pointer
+                                if DataManager.load_from_file(file):
+                                    st.success("✅ Data imported successfully!")
+                                    st.rerun()
+                                else:
+                                    st.error("❌ Invalid file format!")
+                    except Exception as e:
+                        st.error(f"❌ Error reading file: {str(e)}")
             
-            # Session management
-            st.divider()
-            c1, c2, c3 = st.columns(3)
-            
-            with c1:
-                st.download_button(
-                    "💾 Backup",
-                    data=DataManager.export_backup(),
-                    file_name=f"backup_{datetime.now():%Y%m%d_%H%M}.json",
-                    mime="application/json",
-                    use_container_width=True
-                )
-            
-            with c2:
-                restore = st.file_uploader("Restore", type=["json"], label_visibility="collapsed")
-                if restore and st.button("📥 Load", use_container_width=True):
-                    if DataManager.restore_backup(restore):
-                        st.success("✅ Restored!")
+            # Tab 3: Session management
+            with tab3:
+                st.markdown("**Manage your session data:**")
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    st.markdown("##### 💾 Backup")
+                    st.caption("Save current data to JSON file")
+                    st.download_button(
+                        "📥 Download Backup",
+                        data=DataManager.export_backup(),
+                        file_name=f"reservoir_backup_{datetime.now():%Y%m%d_%H%M%S}.json",
+                        mime="application/json",
+                        use_container_width=True
+                    )
+                
+                with col2:
+                    st.markdown("##### 📥 Restore")
+                    st.caption("Load data from backup file")
+                    restore = st.file_uploader("Choose backup file", type=["json"], key="restore_file")
+                    if restore:
+                        if st.button("Load Backup", use_container_width=True, type="primary"):
+                            if DataManager.restore_backup(restore):
+                                st.success("✅ Data restored successfully!")
+                                st.rerun()
+                            else:
+                                st.error("❌ Invalid backup file!")
+                
+                st.divider()
+                
+                # Clear data section
+                st.markdown("##### 🗑️ Clear Data")
+                st.caption("Remove all data points from current session")
+                
+                col1, col2, col3 = st.columns([1, 1, 1])
+                with col2:
+                    if st.button("⚠️ Clear All Data", use_container_width=True, type="secondary"):
+                        DataManager.clear_all()
                         st.rerun()
-            
-            with c3:
-                if st.button("🗑️ Clear", use_container_width=True):
-                    DataManager.clear_all()
-                    st.rerun()
         
         return DataManager.get_dataframe()
     
