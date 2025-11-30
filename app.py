@@ -44,7 +44,7 @@ class Config:
         ("Akfina Ni'mawati", "123230076"),
         ("Rakha Taufiqurrahman Faisal Aziz", "123230071"),
         ("Adi Dwi Pambudi", "123230170"),
-        ("Yediya Elshama Santosa", "123230174")
+        ("Yediya Elshama Santosa", "123230174"),
         ("Muhammad Azmi Nasril", "123230190")
     ]
     
