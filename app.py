@@ -45,6 +45,7 @@ class Config:
         ("Rakha Taufiqurrahman Faisal Aziz", "123230071"),
         ("Adi Dwi Pambudi", "123230170"),
         ("Yediya Elshama Santosa", "123230174")
+        ("Muhammad Azmi Nasril", "123230190")
     ]
     
     DEFAULT_PETRO = {
