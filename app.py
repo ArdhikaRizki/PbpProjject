@@ -707,7 +707,7 @@ class UIBuilder:
                     with col3:
                         z = st.number_input("Depth (Z)", value=1000.0, step=10.0, help="Depth in meters")
                     
-                    submitted = st.form_submit_button("➕ Add Point", use_container_width=True, type="primary")
+                    submitted = st.form_submit_button("➕ Add Point", width="stretch", type="primary")
                     if submitted:
                         DataManager.add_point(x, y, z)
                         st.success(f"✅ Point added: X={x}, Y={y}, Z={z}")
@@ -731,13 +731,13 @@ class UIBuilder:
                         preview_df.columns = [c.upper() for c in preview_df.columns]
                         
                         st.markdown("**Preview:**")
-                        st.dataframe(preview_df.head(), use_container_width=True)
+                        st.dataframe(preview_df.head(), width="stretch")
                         
                         col1, col2 = st.columns([3, 1])
                         with col1:
                             st.info(f"📊 Found {len(preview_df)} data points")
                         with col2:
-                            if st.button("🚀 Import Data", use_container_width=True, type="primary"):
+                            if st.button("🚀 Import Data", width="stretch", type="primary"):
                                 file.seek(0)  # Reset file pointer
                                 if DataManager.load_from_file(file):
                                     st.success("✅ Data imported successfully!")
@@ -761,7 +761,7 @@ class UIBuilder:
                         data=DataManager.export_backup(),
                         file_name=f"reservoir_backup_{datetime.now():%Y%m%d_%H%M%S}.json",
                         mime="application/json",
-                        use_container_width=True
+                        width="stretch"
                     )
                 
                 with col2:
@@ -769,7 +769,7 @@ class UIBuilder:
                     st.caption("Load data from backup file")
                     restore = st.file_uploader("Choose backup file", type=["json"], key="restore_file")
                     if restore:
-                        if st.button("Load Backup", use_container_width=True, type="primary"):
+                        if st.button("Load Backup", width="stretch", type="primary"):
                             if DataManager.restore_backup(restore):
                                 st.success("✅ Data restored successfully!")
                                 st.rerun()
@@ -784,7 +784,7 @@ class UIBuilder:
                 
                 col1, col2, col3 = st.columns([1, 1, 1])
                 with col2:
-                    if st.button("⚠️ Clear All Data", use_container_width=True, type="secondary"):
+                    if st.button("⚠️ Clear All Data", width="stretch", type="secondary"):
                         DataManager.clear_all()
                         st.rerun()
         
@@ -976,7 +976,7 @@ def main():
                     data=pdf,
                     file_name=f"reservoir_report_{datetime.now():%Y%m%d}.pdf",
                     mime="application/pdf",
-                    use_container_width=True
+                    width="stretch"
                 )
             
             with c2:
@@ -986,7 +986,7 @@ def main():
                     data=excel,
                     file_name=f"reservoir_report_{datetime.now():%Y%m%d}.xlsx",
                     mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    use_container_width=True
+                    width="stretch"
                 )
             
             with c3:
@@ -1000,14 +1000,14 @@ def main():
                     data=grid_df.to_csv(index=False),
                     file_name=f"grid_data_{datetime.now():%Y%m%d}.csv",
                     mime="text/csv",
-                    use_container_width=True
+                    width="stretch"
                 )
             
             st.divider()
             st.markdown("#### 📋 Raw Data")
             st.dataframe(
-                df.style.background_gradient(cmap='viridis', axis=0),
-                use_container_width=True,
+                df,
+                width="stretch",
                 height=350
             )
 
