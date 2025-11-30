@@ -33,13 +33,14 @@ class Config:
     INTERPOLATION_RESOLUTION = 100
     
     TEAM = [
+        ("Ardhika Rizki Akbar Pratama", "123230057"),
         ("Saif Ali Addamawi", "123230164"),
         ("Ilham Cesario Putra Wippri", "123230106"),
         ("Sayyid Fakhri Nurjundi", "123230172"),
         ("Akmal Abrisam", "123230084"),
         ("Muhammad Rizal Wahyu Dharmawan", "123230200"),
         ("Elyuzar Fazlurrahman", "123230216"),
-        ("Ardhika Rizki Akbar Pratama", "123230057"),
+        ("Anak Agung Ngurah Sadewa Tedja", "123230050"),
         ("Akfina Ni'mawati", "123230076"),
         ("Rakha Taufiqurrahman Faisal Aziz", "123230071"),
         ("Adi Dwi Pambudi", "123230170"),
