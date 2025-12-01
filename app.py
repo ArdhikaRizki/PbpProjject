@@ -48,9 +48,9 @@ class Config:
         ("Muhammad Azmi Nasril", "123230190"),
         ("Laksana Atmaja Putra", "123230235"),
         ("Athallah Joyoningrat", "123230230")
-        ("Muhammad Azmi Nasril (123230190"),
-        ("Gorbi Ello Pasaribu (123230083)"),
-        ("⁠Celsi Fransisca Sitompul (123230015)"),
+        ("Muhammad Azmi Nasril", "123230190"),
+        ("Gorbi Ello Pasaribu", "123230083"),
+        ("⁠Celsi Fransisca Sitompul", "123230015"),
     ]
     
     DEFAULT_PETRO = {
