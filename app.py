@@ -53,6 +53,7 @@ class Config:
         ("⁠Celsi Fransisca Sitompul", "123230015"),
         ("Priska Natalia Sembiring", "123230055"),
         ("Kurniasari Salasa Mubarokhati", "123230236"),
+        ("Muhammad Irham Hadi Putra", "123230042"),
     ]
     
     DEFAULT_PETRO = {
