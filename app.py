@@ -28,7 +28,7 @@ from reportlab.lib.enums import TA_CENTER
 class Config:
     """Centralized configuration management"""
     APP_NAME = "Kelompok Villa Temanggung"
-    APP_ICON = ":🏡:"
+    APP_ICON = "🏡"
     MIN_POINTS = 4
     INTERPOLATION_RESOLUTION = 100
     
@@ -51,6 +51,8 @@ class Config:
         ("Muhammad Azmi Nasril", "123230190"),
         ("Gorbi Ello Pasaribu", "123230083"),
         ("⁠Celsi Fransisca Sitompul", "123230015"),
+        ("Priska Natalia Sembiring", "123230055"),
+        ("Kurniasari Salasa Mubarokhati", "123230236"),
     ]
     
     DEFAULT_PETRO = {
